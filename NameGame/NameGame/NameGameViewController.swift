@@ -21,9 +21,13 @@ class NameGameViewController: UIViewController {
         
         let orientation: UIDeviceOrientation = self.view.frame.size.height > self.view.frame.size.width ? .portrait : .landscapeLeft
         configureSubviews(orientation)
-    }
+        
+        var nameGame = NameGame.self
+        nameGame.loadGameData(<#NameGame#>)
+        }
 
     @IBAction func faceTapped(_ button: FaceButton) {
+        print("face tapped")
     }
 
     func configureSubviews(_ orientation: UIDeviceOrientation) {

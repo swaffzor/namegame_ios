@@ -20,6 +20,17 @@ class NameGame {
 
     // Load JSON data from API
     func loadGameData(completion: @escaping () -> Void) {
-
+        
+        
+        if let url = URL(string: "https://willowtreeapps.com/api/v1.0/profiles/") {
+            do {
+                let contents = try String(contentsOf: url)
+                print(contents)
+            } catch {
+                // contents could not be loaded
+            }
+        } else {
+            // the URL was bad!
+        }
     }
 }
