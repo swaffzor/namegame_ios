@@ -16,15 +16,20 @@ class NameGameViewController: UIViewController {
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet var imageButtons: [FaceButton]!
 
+    var people = [Person]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let orientation: UIDeviceOrientation = self.view.frame.size.height > self.view.frame.size.width ? .portrait : .landscapeLeft
         configureSubviews(orientation)
         
-        var nameGame = NameGame.self
-        nameGame.loadGameData(<#NameGame#>)
+        var nameGame = NameGame()
+        
+        nameGame.loadGameData() { people in
+            self.people = people
         }
+    }
 
     @IBAction func faceTapped(_ button: FaceButton) {
         print("face tapped")
