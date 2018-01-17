@@ -14,19 +14,24 @@ class Person {
     var lastName: String
     var photo: String
     var jobTitle: String?
+    var appeared: Int
+    var correct: Int
     
     init?(json: [String: Any]){
         guard let firstName = json["firstName"] as? String,
             let lastName = json["lastName"] as? String,
             let headshot = json["headshot"] as? [String: Any],
-            let photo = headshot["url"] as? String
+            var photo = headshot["url"] as? String
         else {
             print("failed to init " + String(describing: json["firstName"]))
             return nil
         }
         self.firstName = firstName
         self.lastName = lastName
+        photo.insert(contentsOf: "http:", at: photo.startIndex)
         self.photo = photo
         self.jobTitle = json["jobTitle"] as? String
+        self.appeared = 0
+        self.correct = 0
     }
 }
