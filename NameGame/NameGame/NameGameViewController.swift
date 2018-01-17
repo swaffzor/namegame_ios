@@ -17,6 +17,8 @@ class NameGameViewController: UIViewController {
     @IBOutlet var imageButtons: [FaceButton]!
 
     var people = [Person]()
+    var personOfInterest: Person?
+    var nameGame = NameGame()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,18 +26,24 @@ class NameGameViewController: UIViewController {
         let orientation: UIDeviceOrientation = self.view.frame.size.height > self.view.frame.size.width ? .portrait : .landscapeLeft
         configureSubviews(orientation)
         
-        var nameGame = NameGame()
         
         nameGame.loadGameData() { people in
             self.people = people
         }
         
-        startNewRound(people: self.people, nameGame: nameGame)
+        startNewRound()
     }
 
     @IBAction func faceTapped(_ button: FaceButton) {
-        
         print(people[button.id].firstName + " " + people[button.id].lastName + " face tapped")
+        if nameGame.checkAnswer(button: button, person: personOfInterest!) {
+            print("correct")
+            people[button.id].correct += 1
+            startNewRound()
+        }
+        else{
+            print("incorrect")
+        }
     }
 
     func configureSubviews(_ orientation: UIDeviceOrientation) {
@@ -57,12 +65,13 @@ class NameGameViewController: UIViewController {
         configureSubviews(orientation)
     }
     
-    func startNewRound(people: [Person], nameGame: NameGame){
+    func startNewRound(){
         //pick 6 (random?) people
         for button in imageButtons{
             let randomIndex = Int(arc4random_uniform(UInt32(people.count)))
             if people[randomIndex].correct < 1 {
                 button.id = randomIndex
+                button.person = people[button.id]
                 let session = URLSession(configuration: .default)
                 let url = URL(string: people[randomIndex].photo)
                 //creating a dataTask
@@ -96,8 +105,9 @@ class NameGameViewController: UIViewController {
             }
         }
         //update the label with the selected person
-        let personOfInterest = Int(arc4random_uniform(UInt32(imageButtons.count)))
-        let personID = imageButtons[personOfInterest].id
+        let personOfInterestID = Int(arc4random_uniform(UInt32(imageButtons.count)))
+        let personID = imageButtons[personOfInterestID].id
+        personOfInterest = people[personID]
         questionLabel.text = "Who is " + people[personID].firstName + " " + people[personID].lastName + "?"
         
         //set game state?

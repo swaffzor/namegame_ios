@@ -13,6 +13,7 @@ open class FaceButton: UIButton {
 
     var id: Int = 0
     var tintView: UIView = UIView(frame: CGRect.zero)
+    var person: Person?
 
     override init(frame: CGRect) {
         super.init(frame: frame)

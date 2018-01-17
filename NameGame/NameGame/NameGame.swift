@@ -42,4 +42,8 @@ class NameGame {
             print("bad url")
         }
     }
+    
+    func checkAnswer(button: FaceButton, person: Person) -> Bool {
+        return button.person!.firstName == person.firstName && button.person!.lastName == person.lastName
+    }
 }
